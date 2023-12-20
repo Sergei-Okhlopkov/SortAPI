@@ -9,12 +9,32 @@
             this.sort = sort;
         }
 
-        public void Sort<T>(T[] arr)
+        public void Sort(int[] arr)
         {
             sort.Sort(arr);
         }
 
-        public void SortParallel<T>(T[] arr)
+        public void Sort(float[] arr)
+        {
+            sort.Sort(arr);
+        }
+
+        public void Sort(double[] arr)
+        {
+            sort.Sort(arr);
+        }
+
+        public void SortParallel(int[] arr)
+        {
+            sort.SortParallel(arr);
+        }
+
+        public void SortParallel(float[] arr)
+        {
+            sort.SortParallel(arr);
+        }
+
+        public void SortParallel(double[] arr)
         {
             sort.SortParallel(arr);
         }

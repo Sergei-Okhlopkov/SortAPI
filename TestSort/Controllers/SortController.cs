@@ -37,7 +37,7 @@ namespace TestSort.Controllers
         }
 
         [HttpPost("test")]
-        public ActionResult<int[]> Test()
+        public ActionResult<TimeSpan> Test(int N = 1000000)
         {
             string inputFile = "array.txt";
             string[] valuesArray;
@@ -52,8 +52,6 @@ namespace TestSort.Controllers
 
             }
             
-            int N = 1000000;
-
             // Создаем массив int для хранения считанных значений
             int[] arr = new int[N];
 
@@ -71,7 +69,9 @@ namespace TestSort.Controllers
             sd.Sort(arr);
             sw.Stop();
 
-            return arr;
+            TimeSpan time = sw.Elapsed;
+
+            return time;
         }
 
 

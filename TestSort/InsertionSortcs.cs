@@ -11,14 +11,15 @@
                 return _instance ?? (_instance = new InsertionSort());
             }
         }
-        public void Sort<T>(T[] arr)
+   
+        public void Sort(int[] arr)
         {
             for (int i = 1; i < arr.Length; i++)
             {
-                T key = arr[i];
+                int key = arr[i];
                 int j = i - 1;
 
-                while (j >= 0 && GOp<T>.Bigger(arr[j], key))
+                while (j >= 0 && arr[j] > key)
                 {
                     arr[j + 1] = arr[j];
                     j--;
@@ -27,38 +28,106 @@
                 arr[j + 1] = key;
             }
         }
-        
-        /// <summary>
-        /// Сравнение двух значений типа 
-        /// </summary>
-        /// <typeparam name="T">int, float or double</typeparam>
-        /// <param name="one">left operand</param>
-        /// <param name="two">right operand</param>
-        /// <returns>True, if one bigger than two. False, if two bigger than one or two equals one</returns>
-       
-        //private bool Bigger<T>(T? one, T? two)
-        //{
-        //    if (typeof(T) == typeof(int) || typeof(T) == typeof(float) || typeof(T) == typeof(double))
-        //    {
-        //        double leftOperand = Convert.ToDouble(one);
-        //        double rightOperand = Convert.ToDouble(two);
 
-        //        if (leftOperand > rightOperand)
-        //        {
-        //            return true;
-        //        }
-        //        else
-        //        {
-        //            return false;
-        //        }
-        //    }
-        //    else
-        //    {
-        //        throw new ArgumentException($"Обработка типа {typeof(T)} невозможна в данной версии программы");
-        //    }
-        //}
+        public void Sort(float[] arr)
+        {
+            for (int i = 1; i < arr.Length; i++)
+            {
+                float key = arr[i];
+                int j = i - 1;
 
-        public void SortParallel<T>(T[] arr)
+                while (j >= 0 && arr[j] > key)
+                {
+                    arr[j + 1] = arr[j];
+                    j--;
+                }
+
+                arr[j + 1] = key;
+            }
+        }
+
+        public void Sort(double[] arr)
+        {
+            for (int i = 1; i < arr.Length; i++)
+            {
+                double key = arr[i];
+                int j = i - 1;
+
+                while (j >= 0 && arr[j] > key)
+                {
+                    arr[j + 1] = arr[j];
+                    j--;
+                }
+
+                arr[j + 1] = key;
+            }
+        }
+
+
+        #region Для TimSort
+        public void Sort(int[] arr, int left, int right)
+        {
+            for (int i = left + 1; i <= right; i++)
+            {
+                int key = arr[i];
+                int j = i - 1;
+
+                while (j >= left && arr[j] > key)
+                {
+                    arr[j + 1] = arr[j];
+                    j--;
+                }
+
+                arr[j + 1] = key;
+            }
+        }
+
+        public void Sort(float[] arr, int left, int right)
+        {
+            for (int i = left + 1; i <= right; i++)
+            {
+                float key = arr[i];
+                int j = i - 1;
+
+                while (j >= left && arr[j] > key)
+                {
+                    arr[j + 1] = arr[j];
+                    j--;
+                }
+
+                arr[j + 1] = key;
+            }
+        }
+
+        public void Sort(double[] arr, int left, int right)
+        {
+            for (int i = left + 1; i <= right; i++)
+            {
+                double key = arr[i];
+                int j = i - 1;
+
+                while (j >= left && arr[j] > key)
+                {
+                    arr[j + 1] = arr[j];
+                    j--;
+                }
+
+                arr[j + 1] = key;
+            }
+        }
+        #endregion
+
+        public void SortParallel(int[] arr)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void SortParallel(float[] arr)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void SortParallel(double[] arr)
         {
             throw new NotImplementedException();
         }

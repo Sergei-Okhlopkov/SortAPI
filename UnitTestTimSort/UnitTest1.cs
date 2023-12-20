@@ -11,8 +11,6 @@ namespace UnitTestTimSort
         {
             int[] arr = new int[] { 23, 16, 7, 0, -5, 153, 1024, 67, 89, 2 };
 
-            var timSort = new TimSort();
-
             InsertionSort.Instance.Sort(arr);
 
             int[] expected = new int[] { -5, 0, 2, 7, 16, 23, 67, 89, 153, 1024 };
@@ -32,7 +30,7 @@ namespace UnitTestTimSort
 
             int k = 0;
 
-            timSort.MergeSort(arr, leftArr, leftArr.Length, rightArr, rightArr.Length, ref k);
+            timSort.MergeSort(arr, leftArr, rightArr, ref k);
 
             int[] expected = new int[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
 

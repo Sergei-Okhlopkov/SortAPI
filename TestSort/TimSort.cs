@@ -1,6 +1,6 @@
 ﻿namespace TestSort
 {
-    public class TimSort: ISort
+    public class TimSort : ISort
     {
         private static TimSort _instance;
 
@@ -11,8 +11,8 @@
                 return _instance ?? (_instance = new TimSort());
             }
         }
-       
-        public void Sort<T>(T[] arr)
+
+        public void Sort(int[] arr)
         {
             int N = arr.Length;
 
@@ -20,7 +20,7 @@
 
             for (int i = 0; i < N; i += minRunSize)
             {
-                InsertionSort(arr, i, Math.Min(i + minRunSize - 1, N - 1));
+                InsertionSort.Instance.Sort(arr, i, Math.Min(i + minRunSize - 1, N - 1));
             }
 
             for (int size = minRunSize; size <= N; size = 2 * size)
@@ -35,8 +35,8 @@
                     int leftSize = mid - left + 1;
                     int rightSize = right - mid < 0 ? 0 : right - mid;
 
-                    T[] leftArr = new T[leftSize];
-                    T[] rightArr = new T[rightSize];
+                    int[] leftArr = new int[leftSize];
+                    int[] rightArr = new int[rightSize];
 
                     for (int i = 0; i < leftSize; i++)
                     {
@@ -50,14 +50,13 @@
 
                     if (mid < right)
                     {
-                        MergeSort(arr, leftArr, leftSize, rightArr, rightSize, ref k);
+                        MergeSort(arr, leftArr, rightArr, ref k);
                     }
-
                 }
             }
         }
 
-        public void SortParallel<T>(T[] arr)
+        public void SortParallel(int[] arr)
         {
             int N = arr.Length;
 
@@ -65,7 +64,7 @@
 
             Parallel.ForEach(SteppedIterator(0, N, minRunSize), i =>
             {
-                InsertionSort(arr, i, Math.Min(i + minRunSize - 1, N - 1));
+                InsertionSort.Instance.Sort(arr, i, Math.Min(i + minRunSize - 1, N - 1));
             });
 
             for (int size = minRunSize; size <= N; size = 2 * size)
@@ -80,8 +79,8 @@
                     int leftSize = mid - left + 1;
                     int rightSize = right - mid < 0 ? 0 : right - mid;
 
-                    T[] leftArr = new T[leftSize];
-                    T[] rightArr = new T[rightSize];
+                    int[] leftArr = new int[leftSize];
+                    int[] rightArr = new int[rightSize];
 
                     for (int i = 0; i < leftSize; i++)
                     {
@@ -95,46 +94,22 @@
 
                     if (mid < right)
                     {
-                        MergeSort(arr, leftArr, leftSize, rightArr, rightSize, ref k);
+                        MergeSort(arr, leftArr, rightArr, ref k);
                     }
-
                 }
             }
         }
 
-        //public void MergeSort<T>(T[] arr, T[] left, int leftSize, T[] right, int rightSize, ref int k) 
-        //{
-        //    int i = 0;
-        //    int j = 0;
-        //    while (i < leftSize && j < rightSize)
-        //    {
-        //        if (left[i] <= right[j])
-        //        {
-        //            arr[k++] = left[i++];
-        //        }
-        //        else
-        //        {
-        //            arr[k++] = right[j++];
-        //        }
-        //    }
-
-        //    while (i < leftSize)
-        //    {
-        //        arr[k++] = left[i++];
-        //    }
-
-        //    while (j < rightSize)
-        //    {
-        //        arr[k++] = right[j++];
-        //    }
-        //}
-        public void MergeSort<T>(T[] arr, T[] left, int leftSize, T[] right, int rightSize, ref int k)
+        public void MergeSort(int[] arr, int[] left, int[] right, ref int k)
         {
             int i = 0;
             int j = 0;
+            int leftSize = left.Length;
+            int rightSize = right.Length;
+
             while (i < leftSize && j < rightSize)
             {
-                if (GOp<T>.LesserEqual(left[i], right[j]))
+                if (left[i] <= right[j])
                 {
                     arr[k++] = left[i++];
                 }
@@ -155,20 +130,63 @@
             }
         }
 
-        public void InsertionSort<T>(T[] arr, int left, int right)
+        public void MergeSort(float[] arr, float[] left, float[] right, ref int k)
         {
-            for (int i = left + 1; i <= right; i++)
+            int i = 0;
+            int j = 0;
+            int leftSize = left.Length;
+            int rightSize = right.Length;
+
+            while (i < leftSize && j < rightSize)
             {
-                T key = arr[i];
-                int j = i - 1;
-
-                while (j >= left && GOp<T>.Bigger(arr[j], key)) 
+                if (left[i] <= right[j])
                 {
-                    arr[j + 1] = arr[j];
-                    j--;
+                    arr[k++] = left[i++];
                 }
+                else
+                {
+                    arr[k++] = right[j++];
+                }
+            }
 
-                arr[j + 1] = key;
+            while (i < leftSize)
+            {
+                arr[k++] = left[i++];
+            }
+
+            while (j < rightSize)
+            {
+                arr[k++] = right[j++];
+            }
+        }
+
+        public void MergeSort(double[] arr, double[] left, double[] right, ref int k)
+        {
+            int i = 0;
+            int j = 0;
+            int leftSize = left.Length;
+            int rightSize = right.Length;
+
+            while (i < leftSize && j < rightSize)
+            {
+                if (left[i] <= right[j])
+                {
+                    arr[k++] = left[i++];
+                }
+                else
+                {
+                    arr[k++] = right[j++];
+                }
+            }
+
+            while (i < leftSize)
+            {
+                arr[k++] = left[i++];
+            }
+
+            while (j < rightSize)
+            {
+                arr[k++] = right[j++];
             }
         }
 
@@ -188,6 +206,180 @@
             for (int i = startIndex; i < endIndex; i = i + stepSize)
             {
                 yield return i;
+            }
+        }
+
+        public void Sort(float[] arr)
+        {
+            int N = arr.Length;
+            int minRunSize = GetMinrun(N);
+
+            for (int i = 0; i < N; i += minRunSize)
+            {
+                InsertionSort.Instance.Sort(arr, i, Math.Min(i + minRunSize - 1, N - 1));
+            }
+
+            for (int size = minRunSize; size <= N; size = 2 * size)
+            {
+                int k = 0;
+
+                for (int left = 0; left < N; left += 2 * size)
+                {
+                    int mid = Math.Min(left + size - 1, N - 1);
+                    int right = Math.Min(left + 2 * size - 1, N - 1);
+
+                    int leftSize = mid - left + 1;
+                    int rightSize = right - mid < 0 ? 0 : right - mid;
+
+                    float[] leftArr = new float[leftSize];
+                    float[] rightArr = new float[rightSize];
+
+                    for (int i = 0; i < leftSize; i++)
+                    {
+                        leftArr[i] = arr[i + left];
+                    }
+
+                    for (int i = 0; i < rightSize; i++)
+                    {
+                        rightArr[i] = arr[i + mid + 1];
+                    }
+
+                    if (mid < right)
+                    {
+                        MergeSort(arr, leftArr, rightArr, ref k);
+                    }
+                }
+            }
+        }
+
+        public void Sort(double[] arr)
+        {
+            int N = arr.Length;
+            int minRunSize = GetMinrun(N);
+
+            for (int i = 0; i < N; i += minRunSize)
+            {
+                InsertionSort.Instance.Sort(arr, i, Math.Min(i + minRunSize - 1, N - 1));
+            }
+
+            for (int size = minRunSize; size <= N; size = 2 * size)
+            {
+                int k = 0;
+
+                for (int left = 0; left < N; left += 2 * size)
+                {
+                    int mid = Math.Min(left + size - 1, N - 1);
+                    int right = Math.Min(left + 2 * size - 1, N - 1);
+
+                    int leftSize = mid - left + 1;
+                    int rightSize = right - mid < 0 ? 0 : right - mid;
+
+                    double[] leftArr = new double[leftSize];
+                    double[] rightArr = new double[rightSize];
+
+                    for (int i = 0; i < leftSize; i++)
+                    {
+                        leftArr[i] = arr[i + left];
+                    }
+
+                    for (int i = 0; i < rightSize; i++)
+                    {
+                        rightArr[i] = arr[i + mid + 1];
+                    }
+
+                    if (mid < right)
+                    {
+                        MergeSort(arr, leftArr, rightArr, ref k);
+                    }
+                }
+            }
+        }
+
+        public void SortParallel(float[] arr)
+        {
+            int N = arr.Length;
+
+            int minRunSize = GetMinrun(N);
+
+            Parallel.ForEach(SteppedIterator(0, N, minRunSize), i =>
+            {
+                InsertionSort.Instance.Sort(arr, i, Math.Min(i + minRunSize - 1, N - 1));
+            });
+
+            for (int size = minRunSize; size <= N; size = 2 * size)
+            {
+                int k = 0;
+
+                for (int left = 0; left < N; left += 2 * size)
+                {
+                    int mid = Math.Min(left + size - 1, N - 1);
+                    int right = Math.Min(left + 2 * size - 1, N - 1);
+
+                    int leftSize = mid - left + 1;
+                    int rightSize = right - mid < 0 ? 0 : right - mid;
+
+                    float[] leftArr = new float[leftSize];
+                    float[] rightArr = new float[rightSize];
+
+                    for (int i = 0; i < leftSize; i++)
+                    {
+                        leftArr[i] = arr[i + left];
+                    }
+
+                    for (int i = 0; i < rightSize; i++)
+                    {
+                        rightArr[i] = arr[i + mid + 1];
+                    }
+
+                    if (mid < right)
+                    {
+                        MergeSort(arr, leftArr, rightArr, ref k);
+                    }
+                }
+            }
+        }
+
+        public void SortParallel(double[] arr)
+        {
+            int N = arr.Length;
+
+            int minRunSize = GetMinrun(N);
+
+            Parallel.ForEach(SteppedIterator(0, N, minRunSize), i =>
+            {
+                InsertionSort.Instance.Sort(arr, i, Math.Min(i + minRunSize - 1, N - 1));
+            });
+
+            for (int size = minRunSize; size <= N; size = 2 * size)
+            {
+                int k = 0;
+
+                for (int left = 0; left < N; left += 2 * size)
+                {
+                    int mid = Math.Min(left + size - 1, N - 1);
+                    int right = Math.Min(left + 2 * size - 1, N - 1);
+
+                    int leftSize = mid - left + 1;
+                    int rightSize = right - mid < 0 ? 0 : right - mid;
+
+                    double[] leftArr = new double[leftSize];
+                    double[] rightArr = new double[rightSize];
+
+                    for (int i = 0; i < leftSize; i++)
+                    {
+                        leftArr[i] = arr[i + left];
+                    }
+
+                    for (int i = 0; i < rightSize; i++)
+                    {
+                        rightArr[i] = arr[i + mid + 1];
+                    }
+
+                    if (mid < right)
+                    {
+                        MergeSort(arr, leftArr, rightArr, ref k);
+                    }
+                }
             }
         }
     }
