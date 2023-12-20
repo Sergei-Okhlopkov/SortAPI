@@ -69,9 +69,7 @@ namespace TestSort.Controllers
             sd.Sort(arr);
             sw.Stop();
 
-            TimeSpan time = sw.Elapsed;
-
-            return time;
+            return sw.Elapsed;
         }
 
 
