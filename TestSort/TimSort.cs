@@ -20,7 +20,7 @@
 
             for (int i = 0; i < N; i += minRunSize)
             {
-                InsertionSort<T>(arr, i, Math.Min(i + minRunSize - 1, N - 1));
+                InsertionSort(arr, i, Math.Min(i + minRunSize - 1, N - 1));
             }
 
             for (int size = minRunSize; size <= N; size = 2 * size)
@@ -162,7 +162,7 @@
                 T key = arr[i];
                 int j = i - 1;
 
-                while (j >= left && GOp<T>.Bigger(arr[j], key))
+                while (j >= left && GOp<T>.Bigger(arr[j], key)) 
                 {
                     arr[j + 1] = arr[j];
                     j--;

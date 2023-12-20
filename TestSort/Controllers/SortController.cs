@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Ninject;
+using System.Diagnostics;
 using System.Reflection;
+using System.Text;
 
 namespace TestSort.Controllers
 {
@@ -33,6 +35,47 @@ namespace TestSort.Controllers
 
             return arr;
         }
+
+        [HttpPost("test")]
+        public ActionResult<int[]> Test()
+        {
+            string inputFile = "array.txt";
+            string[] valuesArray;
+
+            FileStream uploadFileStream = System.IO.File.OpenRead(inputFile);
+            using (var sr = new StreamReader(uploadFileStream, Encoding.UTF8)) // what is the encoding of the text? 
+            {
+                var allText = sr.ReadToEnd(); // read all text into memory
+                                              // TODO: Find most frequent word in allText
+                                              // replace the word allText.Replace(oldValue, newValue, stringComparison)
+                valuesArray = allText.Split(' ');
+
+            }
+            
+            int N = 1000000;
+
+            // Создаем массив int для хранения считанных значений
+            int[] arr = new int[N];
+
+            // Конвертируем каждое значение в int и сохраняем в массив
+            for (int i = 0; i < N; i++)
+            {
+                arr[i] = int.Parse(valuesArray[i]);
+            }
+
+            var sort = kernel.Get<ISort>();
+            SortDistributor sd = new SortDistributor(sort);
+
+            var sw = new Stopwatch();
+            sw.Start();
+            sd.Sort(arr);
+            sw.Stop();
+
+            return arr;
+        }
+
+
+
 
         [HttpPost("timSortP")]
         public ActionResult<int[]> TimSortParallel([FromBody] int[] arr)

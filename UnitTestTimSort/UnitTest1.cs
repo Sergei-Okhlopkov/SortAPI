@@ -1,3 +1,4 @@
+using System.Diagnostics;
 using TestSort;
 
 namespace UnitTestTimSort
@@ -67,6 +68,51 @@ namespace UnitTestTimSort
   194,  195,  196,  197,  198,  199,  200,  201,  202,  203,  204,  205,  206,  207,  208,  209,  210,  211,  212,  213,  214,  215,  216,  217,  218,  219,  220,  221,  222,  223,  224,  225,
   226,  227,  228,  229,  230,  231,  232,  233,  234,  235,  236,  237,  238,  239,  240,  241,  242,  243,  244,  245,  246,  247,  248,  249,  250,  251,  252,  253,  254,  255,  256,  257,
   258,  259,  260,  261 };
+
+            CollectionAssert.AreEqual(arr, expected);
+
+        }
+
+        [TestMethod]
+        public void TimSortIsWorkingRightBigMass()
+        {
+            string inputFile = "array.txt";
+            string expectedFile = "sortedArray.txt";
+
+            string valuesString = File.ReadAllText(inputFile);
+
+            // Разделяем строку на отдельные значения
+            string[] valuesArray = valuesString.Split(' ');
+
+            int N = 1000000;
+
+            // Создаем массив int для хранения считанных значений
+            int[] arr = new int[N];
+
+            // Конвертируем каждое значение в int и сохраняем в массив
+            for (int i = 0; i < N; i++)
+            {
+                arr[i] = int.Parse(valuesArray[i]);
+            }
+
+            var sw = new Stopwatch();
+            sw.Start();
+            TimSort.Instance.Sort(arr);
+            sw.Stop();
+
+            var time = sw.Elapsed;
+
+            int[] expected = new int[N];
+            valuesString = File.ReadAllText(expectedFile);
+
+            // Разделяем строку на отдельные значения
+            valuesArray = valuesString.Split(' ');
+
+            // Конвертируем каждое значение в int и сохраняем в массив
+            for (int i = 0; i < N; i++)
+            {
+                expected[i] = int.Parse(valuesArray[i]);
+            }
 
             CollectionAssert.AreEqual(arr, expected);
 
